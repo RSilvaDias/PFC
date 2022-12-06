@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monolithdc
+  labels:
+    app: monolithdc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monolithdc
+  template:
+    metadata:
+      labels:
+        app: monolithdc
+    spec:
+      containers:
+      - name: monolithdc
+        image: docker.io/rsdias/monolith:dc
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8081
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: monolithdc
+spec:
+  ports:
+  - port: 8081
+    name: tcp1
+    targetPort: 8081
+  selector:
+    app: monolithdc
+  type: LoadBalancer
