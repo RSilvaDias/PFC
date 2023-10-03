@@ -1,0 +1,71 @@
+uses data.String
+const char debugMSG[] = "[@Primes]"
+
+
+//	Dana Version of Sieve Algorithm to get a list of prime numbers
+//  
+
+component provides App requires io.Output out, data.IntUtil intUtil, util.Math math{
+
+    
+	int primes(int n){
+		
+        String lista[] = null
+        String res[]   = null
+        String zero[]   = new String[](zero,new String("0"))
+        //int n = 10000
+		int result = 0
+        int j = 0
+		
+		if ( n < 2 ){
+			result = 0
+			return result	
+		}
+		if ( n == 2 ){
+			result = 2
+			return result
+		}
+		else{
+            // THIS IS THE BOTTLENECK
+    		for ( int i = 3 ; i < (n+1) ; i = i+2){
+                lista = new String[](lista, new String(intUtil.intToString(i)))
+                j++
+			}
+            
+            int mroot = math.sqrt(n)
+            int half = lista.arrayLength
+            int i = 0
+            int m = 3
+            while ( m <= mroot ){
+                if (lista[i] != zero[0]){
+                    
+                    j = (m*m-3) / 2    
+                    lista[j] = zero[0]
+                    while ( j < half ){
+                        lista[j] = zero[0]
+                        j = j + m
+                    }   
+                }
+                i = i+1
+                m = 2 * i + 3
+            }
+            res = new String[](res, new String("2"))
+            for ( int x = 0 ; x < lista.arrayLength; x++){
+                if ( lista[x] != zero[0]){
+                    res = new String[](res,lista[x])
+                }
+
+            }
+            return res.arrayLength
+		}
+        return 0
+	}
+
+
+	int App:main(AppParam params[]) {
+        int n
+        int primesNumber = primes(n)
+		out.println("$(intUtil.intToString(primesNumber))")
+	    return 0
+	}
+}

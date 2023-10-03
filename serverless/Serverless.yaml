@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smr
+  labels:
+    app: smr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smr
+  template:
+    metadata:
+      labels:
+        app: smr
+    spec:
+      containers:
+      - name: smr
+        image: docker.io/rsdias/serverless:qsort
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8081
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smr
+spec:
+  ports:
+  - port: 8081
+    name: tcp1
+    targetPort: 8081
+  selector:
+    app: smr
+  type: LoadBalancer
