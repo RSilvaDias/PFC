@@ -1,5 +1,0 @@
-interface DSInterceptor extends ws.DocStream {
-	DSInterceptor(store TCPSocket s, store Header headers[], store Header responseHeaders[])
-	void set(store DocStream original)
-	char[] get()
-}
